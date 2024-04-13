@@ -3,9 +3,9 @@
 ## Rodar o repositório:
 
 ### Na primeira vez é necessário instalar as dependencias:
-1. `npm install`
-2. Se for em ambiente local: `npm install --dev`
-3. `cp .env_example .env`
+1. `npm install` na pasta SRC
+2. Se for em ambiente local: `npm install --dev` na pasta SRC
+3. `cp .env_example .env` na pasta sequelize
 
 ### Para rodar o repositório em ambiente local
 1. `npm run start:dev`

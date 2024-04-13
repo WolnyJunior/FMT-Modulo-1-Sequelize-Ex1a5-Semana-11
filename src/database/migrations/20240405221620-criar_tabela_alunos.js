@@ -19,11 +19,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-       createdAt: {
+
+      //timestamps na definição do esquema, que adicionará automaticamente esses campos e os gerenciará sempre que um registro for criado ou atualizado
+      
+       createdAt: { //criar coluna que faz o log data/hora nas inserções
         allowNull: false,
         type: Sequelize.DATE
       },
-       updatedAt: {
+       updatedAt: { //criar coluna que faz o log data/hora nas atualizações
         allowNull: false,
         type: Sequelize.DATE
       }
