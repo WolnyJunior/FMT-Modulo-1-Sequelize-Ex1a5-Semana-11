@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const Curso = require('../models/Curso')
+const { where } = require('sequelize')
 
 const routes = new Router()
 
@@ -30,6 +31,25 @@ routes.post('/cursos', async (req, res) => {
 routes.get('/listar', async (req, res) => {
     const cursos = await Curso.findAll()
     res.status(201).json(cursos)
+})
+
+routes.get('/cursos', async (req, res) => {
+    try {
+        let params = {}
+
+        if (req.query.nome) {
+            params = { ...params, nome: req.query.nome }
+        }
+
+        const cursos = await Curso.findAll({
+            where: params
+        })
+
+        if (cursos.length === 0) {
+            return res.status(404).json({ error: 'Nenhum curso encontrado.' })
+        }
+        res.status(201).json(cursos)
+    } catch (error) { }
 })
 
 module.exports = routes
