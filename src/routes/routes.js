@@ -27,4 +27,9 @@ routes.post('/cursos', async (req, res) => {
     }
 })
 
+routes.get('/listar', async (req, res) => {
+    const cursos = await Curso.findAll()
+    res.status(201).json(cursos)
+})
+
 module.exports = routes
