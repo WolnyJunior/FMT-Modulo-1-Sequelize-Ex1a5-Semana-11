@@ -113,4 +113,14 @@ routes.put('/cursos/:id', async (req, res) => {
     }
 })
 
+routes.delete('/cursos/:id', (req, res) => {
+    const id = req.params.id
+    Curso.destroy({
+        where: {
+            id: id
+        }
+    })
+    res.status(204).json({ message: 'Curso deletado com sucesso.' })
+})
+
 module.exports = routes
