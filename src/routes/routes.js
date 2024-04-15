@@ -52,4 +52,32 @@ routes.get('/cursos', async (req, res) => {
     } catch (error) { }
 })
 
+routes.get('/cursos/horas', async (req, res) => {
+    let params = {}
+    let listStart = 0;
+    let limit = 10;
+
+    if (req.body.page) {
+        const page = parseInt(req.body.page);
+        if (!isNaN(page) && page > 0) {
+            listStart = (page - 1) * limit;
+        }
+    }
+
+    if (req.query.duracao_horas) {
+        params = { ...params, duracao_horas: req.query.duracao_horas }
+    }
+
+    const cursos = await Curso.findAll({
+        where: params,
+        listStart: listStart,
+        limit: limit
+    })
+
+    if (cursos.length === 0) {
+        return res.status(404).json({ error: 'Nenhum curso encontrado com esta carga horária.' })
+    }
+    res.status(201).json(cursos)
+})
+
 module.exports = routes
