@@ -85,11 +85,11 @@ routes.put('/cursos/:id', async (req, res) => {
     try {
         const id = req.params.id
         const { nome, duracao_horas } = req.body
-    
+
         let curso = await Curso.findByPk(id);
-    
-        if(!curso){
-            return res.status(404).json({error:'Curso não encontrado.'})
+
+        if (!curso) {
+            return res.status(404).json({ error: 'Curso não encontrado.' })
         }
 
         if (!nome || !duracao_horas) {
@@ -98,29 +98,41 @@ routes.put('/cursos/:id', async (req, res) => {
         if (!(duracao_horas >= 40 && duracao_horas <= 200)) {
             return res.status(400).json({ message: 'Duração do curso deve ser entre 40 e 200 horas.' })
         }
-    
+
         curso.nome = nome;
         curso.duracao_horas = duracao_horas;
-    
+
         //Salvar as alterações no banco de dados
         await curso.save();
 
         res.status(201).json(curso)
-    
+
     } catch (error) {
         console.log(error);
-        res.status(500).json({error:'Erro ao atualizar o curso.'})
+        res.status(500).json({ error: 'Erro ao atualizar o curso.' })
     }
 })
 
-routes.delete('/cursos/:id', (req, res) => {
-    const id = req.params.id
-    Curso.destroy({
-        where: {
-            id: id
+routes.delete('/cursos/:id', async (req, res) => {
+
+    try {
+        const id = req.params.id
+
+        const idExcluido = await Curso.destroy({
+            where: {
+                id: id
+            }
+        })
+
+        if (idExcluido === 0) {
+            return res.status(404).json({ message: 'Nenhum curso encontrado.' })
         }
-    })
-    res.status(204).json({ message: 'Curso deletado com sucesso.' })
+
+        res.status(204).send();
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Erro ao deletar o curso.' })
+    }
 })
 
 module.exports = routes
